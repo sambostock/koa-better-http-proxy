@@ -304,3 +304,17 @@ app.use(proxy('httpbin.org', {
   timeout: 2000  // in milliseconds, two seconds
 }));
 ```
+
+#### terminateAfterProxy
+
+If you require the request to be terminated after proxying (i.e. not continue
+onto `next())`, you may specify this option. After proxying, the proxy will
+resolve, rather than call `next()`. However, if the request is filtered and
+proxying is prevented, `next()` will still be called. This option is false by
+default.
+
+```js
+app.use(proxy('httpbin.org', {
+  terminateAfterProxy: true,
+}))
+```
