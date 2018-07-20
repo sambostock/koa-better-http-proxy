@@ -14,6 +14,8 @@ var resolveProxyReqPath          = require('./app/steps/resolveProxyReqPath');
 var sendProxyRequest             = require('./app/steps/sendProxyRequest');
 var sendUserRes                  = require('./app/steps/sendUserRes');
 
+var terminate = Promise.resolve();
+
 module.exports = function proxy(host, userOptions) {
   assert(host, 'Host should not be empty');
   return function(ctx, next) {
@@ -35,6 +37,6 @@ module.exports = function proxy(host, userOptions) {
       .then(copyProxyResHeadersToUserRes)
       .then(decorateUserRes)
       .then(sendUserRes)
-      .then(next);
+      .then(container.options.terminateAfterProxy ? terminate : next);
   };
 };
